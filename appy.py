@@ -14,25 +14,12 @@ DATABASE_URL = os.environ.get(
 
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
 
-# Neon Database Connection
-conn = psycopg2.connect(DATABASE_URL)
-cursor = conn.cursor()
 
-# Create table if not exists
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS predictions (
-    id SERIAL PRIMARY KEY,
-    job_title VARCHAR(100),
-    experience_years INTEGER,
-    education_level VARCHAR(100),
-    skills_count INTEGER,
-    company_size VARCHAR(100),
-    location VARCHAR(100),
-    predicted_salary VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-""")
-conn.commit()
+def get_db():
+    conn = psycopg2.connect(DATABASE_URL)
+    cursor = conn.cursor()
+    return conn, cursor
+
 
 # Load model and encoders
 model = pickle.load(open("model/salary_model.pkl", "rb"))
@@ -88,21 +75,26 @@ def predict():
         predicted_salary = model.predict(input_data)[0]
         prediction = f"{round(predicted_salary):,}"
 
-        cursor.execute("""
-        INSERT INTO predictions
-        (job_title, experience_years, education_level,
-        skills_count, company_size, location, predicted_salary)
-        VALUES (%s,%s,%s,%s,%s,%s,%s)
-        """, (
-            job_title,
-            experience_years,
-            education_level,
-            skills_count,
-            company_size,
-            location,
-            prediction
-        ))
-        conn.commit()
+        try:
+            conn, cursor = get_db()
+            cursor.execute("""
+            INSERT INTO predictions
+            (job_title, experience_years, education_level,
+            skills_count, company_size, location, predicted_salary)
+            VALUES (%s,%s,%s,%s,%s,%s,%s)
+            """, (
+                job_title,
+                experience_years,
+                education_level,
+                skills_count,
+                company_size,
+                location,
+                prediction
+            ))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            print(f"DB Error: {e}")
 
     return render_template(
         "predict.html",
@@ -136,12 +128,18 @@ def admin():
     if not session.get("admin"):
         return redirect("/admin-login")
 
-    cursor.execute("""
-        SELECT *
-        FROM predictions
-        ORDER BY id ASC
-    """)
-    predictions = cursor.fetchall()
+    try:
+        conn, cursor = get_db()
+        cursor.execute("""
+            SELECT *
+            FROM predictions
+            ORDER BY id ASC
+        """)
+        predictions = cursor.fetchall()
+        conn.close()
+    except Exception as e:
+        print(f"DB Error: {e}")
+        predictions = []
 
     total_predictions = len(predictions)
     highest_salary = 0
