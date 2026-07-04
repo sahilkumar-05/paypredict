@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Salary Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .custom-navbar {
+            background: rgba(10, 15, 30, 0.92);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+            box-shadow: 0 0 25px rgba(13,110,253,0.55);
+        }
+
+        .nav-menu {
+            background: rgba(255,255,255,0.08);
+            padding: 7px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .nav-menu a {
+            color: #d0d5dd;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+            box-shadow: 0 8px 25px rgba(13,110,253,0.35);
+        }
+
+        .hero {
+            min-height: 100vh;
+            padding-top: 100px;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(13,110,253,0.35), transparent 32%),
+                radial-gradient(circle at 90% 25%, rgba(139,92,246,0.35), transparent 28%),
+                linear-gradient(135deg, #0b1020, #111827 55%, #1e1b4b);
+            color: white;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: rgba(13,110,253,0.12);
+            bottom: -120px;
+            left: -120px;
+            filter: blur(20px);
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.11);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 9px 18px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #e0e7ff;
+        }
+
+        .hero h1 {
+            line-height: 1.08;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-vip {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+            border: none;
+            box-shadow: 0 15px 35px rgba(13,110,253,0.35);
+        }
+
+        .btn-vip:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-glass {
+            background: rgba(255,255,255,0.11);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.22);
+        }
+
+        .btn-glass:hover {
+            background: white;
+            color: #101828;
+        }
+
+        .hero-visual {
+            position: relative;
+            background: rgba(255,255,255,0.09);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 34px;
+            padding: 28px;
+            backdrop-filter: blur(18px);
+            box-shadow: 0 35px 80px rgba(0,0,0,0.35);
+        }
+
+        .hero-img-box {
+            background: white;
+            border-radius: 28px;
+            padding: 18px;
+            overflow: hidden;
+        }
+
+        .hero-img-box img {
+            width: 100%;
+            border-radius: 22px;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: white;
+            color: #101828;
+            border-radius: 18px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.22);
+        }
+
+        .floating-card i {
+            font-size: 26px;
+        }
+
+        .floating-card small {
+            display: block;
+            color: #667085;
+            margin-top: -2px;
+        }
+
+        .card-ai {
+            top: 55px;
+            left: -30px;
+        }
+
+        .card-data {
+            bottom: 65px;
+            right: -28px;
+        }
+
+        .salary-chip {
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+            padding: 16px 22px;
+            border-radius: 22px;
+            box-shadow: 0 18px 40px rgba(13,110,253,0.4);
+        }
+
+        .salary-chip h4 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .mini-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .mini-stat {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.16);
+            padding: 16px 22px;
+            border-radius: 18px;
+            min-width: 140px;
+        }
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            background: #e7f0ff;
+            color: #0d6efd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            margin: auto;
+        }
+
+        .feature-card {
+            border: none;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(16,24,40,0.08);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-7px);
+        }
+
+        footer {
+            background: #101828;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                margin-top: 15px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-menu a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .floating-card,
+            .salary-chip {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 130px;
+                text-align: center;
+            }
+
+            .mini-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+            <span class="brand-logo">
+                <i class="bi bi-cpu-fill"></i>
+            </span>
+            Salary<span class="text-primary">AI</span>
+        </a>
+
+        <div class="nav-menu">
+            <a href="/" class="active"><i class="bi bi-house-door"></i> Home</a>
+            <a href="/predict"><i class="bi bi-graph-up-arrow"></i> Predict</a>
+            <a href="/about"><i class="bi bi-info-circle"></i> About</a>
+            
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container position-relative">
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-6">
+                <span class="hero-badge">
+                    <i class="bi bi-stars"></i> AI Powered Salary Estimation
+                </span>
+
+                <h1 class="display-3 fw-bold mb-4">
+                    Predict Employee Salaries with
+                    <span class="gradient-text">Smart AI</span>
+                </h1>
+
+                <p class="lead mb-4 text-white-50">
+                    A machine learning web application that estimates annual salary using
+                    experience, education, skills, job role, company size, and location.
+                </p>
+
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="/predict" class="btn btn-vip btn-lg px-4">
+                        <i class="bi bi-lightning-charge-fill"></i> Predict Salary
+                    </a>
+
+                    <a href="/about" class="btn btn-glass btn-lg px-4">
+                        View Project
+                    </a>
+                </div>
+
+                <div class="mini-stats">
+                    <div class="mini-stat">
+                        <h4 class="fw-bold mb-0">250K</h4>
+                        <small class="text-white-50">Training Records</small>
+                    </div>
+
+                    <div class="mini-stat">
+                        <h4 class="fw-bold mb-0">91%</h4>
+                        <small class="text-white-50">Model Score</small>
+                    </div>
+
+                    <div class="mini-stat">
+                        <h4 class="fw-bold mb-0">6</h4>
+                        <small class="text-white-50">Input Features</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <div class="hero-img-box">
+                        <img src="https://www.shutterstock.com/image-photo/portrait-happy-african-american-male-260nw-2000247323.jpg" alt="AI Salary Prediction">
+                    </div>
+
+                    <div class="floating-card card-ai">
+                        <i class="bi bi-robot text-primary"></i>
+                        <div>
+                            <strong>AI Model</strong>
+                            <small>Random Forest</small>
+                        </div>
+                    </div>
+
+                    <div class="floating-card card-data">
+                        <i class="bi bi-database-check text-success"></i>
+                        <div>
+                            <strong>250K Records</strong>
+                            <small>Trained Dataset</small>
+                        </div>
+                    </div>
+
+                    <div class="salary-chip">
+                        <small>Predicted Salary</small>
+                        <h4>$123,030</h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Project Features</h2>
+        <p class="text-muted">Core modules included in the salary prediction system</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card feature-card p-4 h-100 text-center">
+                <div class="icon-circle mb-3">
+                    <i class="bi bi-robot"></i>
+                </div>
+                <h5 class="fw-bold">AI Prediction</h5>
+                <p class="text-muted">
+                    Uses a trained Random Forest Regression model to estimate salary.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card feature-card p-4 h-100 text-center">
+                <div class="icon-circle mb-3">
+                    <i class="bi bi-ui-checks"></i>
+                </div>
+                <h5 class="fw-bold">Smart Input Form</h5>
+                <p class="text-muted">
+                    Users enter job title, experience, education, skills, company size, and location.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card feature-card p-4 h-100 text-center">
+                <div class="icon-circle mb-3">
+                    <i class="bi bi-bar-chart-line"></i>
+                </div>
+                <h5 class="fw-bold">Data Driven Result</h5>
+                <p class="text-muted">
+                    Model is trained on 250,000 salary records for better estimation.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold">How It Works</h2>
+        <p class="text-muted mb-4">Simple process from user input to salary result</p>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h5><i class="bi bi-pencil-square text-primary"></i> Enter Details</h5>
+                <p class="text-muted">User fills employee information through the prediction form.</p>
+            </div>
+
+            <div class="col-md-4">
+                <h5><i class="bi bi-cpu text-primary"></i> Model Predicts</h5>
+                <p class="text-muted">Flask sends input to the trained machine learning model.</p>
+            </div>
+
+            <div class="col-md-4">
+                <h5><i class="bi bi-cash-stack text-primary"></i> Salary Output</h5>
+                <p class="text-muted">System displays estimated annual salary instantly.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="text-white text-center py-4">
+    <p class="mb-0">Employee Salary Prediction System using Flask and Machine Learning</p>
+</footer>
+
+</body>
+</html>

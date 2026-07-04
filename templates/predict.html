@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Predict Salary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .custom-navbar {
+            background: rgba(10, 15, 30, 0.92);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            background: rgba(255,255,255,0.08);
+            padding: 7px;
+            border-radius: 40px;
+        }
+
+        .nav-menu a {
+            color: #d0d5dd;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+        }
+
+        .page-hero {
+            padding: 140px 0 60px;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(13,110,253,0.35), transparent 32%),
+                radial-gradient(circle at 90% 25%, rgba(139,92,246,0.35), transparent 28%),
+                linear-gradient(135deg, #0b1020, #111827 55%, #1e1b4b);
+            color: white;
+        }
+
+        .predict-card {
+            margin-top: -35px;
+            border: none;
+            border-radius: 26px;
+            box-shadow: 0 18px 50px rgba(16,24,40,0.12);
+        }
+
+        .form-control,
+        .form-select {
+            padding: 13px;
+            border-radius: 14px;
+        }
+
+        .btn-vip {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 16px;
+            font-weight: 600;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+            border-radius: 22px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        footer {
+            background: #101828;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+            <span class="brand-logo">
+                <i class="bi bi-cpu-fill"></i>
+            </span>
+            Salary<span class="text-primary">AI</span>
+        </a>
+
+        <div class="nav-menu">
+            <a href="/"><i class="bi bi-house-door"></i> Home</a>
+            <a href="/predict" class="active"><i class="bi bi-graph-up-arrow"></i> Predict</a>
+            <a href="/about"><i class="bi bi-info-circle"></i> About</a>
+            
+        </div>
+    </div>
+</nav>
+
+<section class="page-hero text-center">
+    <div class="container">
+        <h1 class="display-5 fw-bold">Predict Employee Salary</h1>
+        <p class="lead text-white-50">
+            Enter employee details and get an AI-based annual salary estimate.
+        </p>
+    </div>
+</section>
+
+<div class="container pb-5">
+    <div class="card predict-card p-4 mx-auto" style="max-width: 850px;">
+        <form method="POST">
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label">Job Title</label>
+                    <select name="job_title" class="form-select" required>
+                        {% for job in job_titles %}
+                        <option value="{{ job }}">{{ job }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Experience Years</label>
+                    <input type="number" name="experience_years" class="form-control" min="0" max="30" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Education Level</label>
+                    <select name="education_level" class="form-select" required>
+                        {% for edu in education_levels %}
+                        <option value="{{ edu }}">{{ edu }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Skills Count</label>
+                    <input type="number" name="skills_count" class="form-control" min="1" max="20" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Company Size</label>
+                    <select name="company_size" class="form-select" required>
+                        {% for company in company_sizes %}
+                        <option value="{{ company }}">{{ company }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Location</label>
+                    <select name="location" class="form-select" required>
+                        {% for location in locations %}
+                        <option value="{{ location }}">{{ location }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-vip w-100 mt-4">
+                <i class="bi bi-lightning-charge-fill"></i> Predict Salary
+            </button>
+        </form>
+
+        {% if prediction %}
+        <div class="result-box mt-4">
+            <h5>Predicted Annual Salary</h5>
+            <h1>${{ prediction }}</h1>
+            <p class="mb-0">per year</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<footer class="text-white text-center py-4">
+    <p class="mb-0">Employee Salary Prediction System using Flask and Machine Learning</p>
+</footer>
+
+</body>
+</html>

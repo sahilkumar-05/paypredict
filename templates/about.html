@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .custom-navbar {
+            background: rgba(10, 15, 30, 0.92);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+            box-shadow: 0 0 25px rgba(13,110,253,0.55);
+        }
+
+        .nav-menu {
+            background: rgba(255,255,255,0.08);
+            padding: 7px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .nav-menu a {
+            color: #d0d5dd;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+            box-shadow: 0 8px 25px rgba(13,110,253,0.35);
+        }
+
+        .about-hero {
+            padding: 150px 0 80px;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(13,110,253,0.35), transparent 32%),
+                radial-gradient(circle at 90% 25%, rgba(139,92,246,0.35), transparent 28%),
+                linear-gradient(135deg, #0b1020, #111827 55%, #1e1b4b);
+            color: white;
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.11);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 9px 18px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 18px;
+            color: #e0e7ff;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-box {
+            background: white;
+            border-radius: 22px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 12px 35px rgba(16,24,40,0.08);
+            border: none;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 26px;
+            border: none;
+            box-shadow: 0 15px 45px rgba(16,24,40,0.08);
+            padding: 40px;
+        }
+
+        .feature-card {
+            border: none;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(16,24,40,0.08);
+            transition: 0.3s;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-7px);
+        }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 18px;
+            box-shadow: 0 12px 28px rgba(13,110,253,0.28);
+        }
+
+        .list-check li {
+            margin-bottom: 10px;
+        }
+
+        .list-check i {
+            color: #0d6efd;
+            margin-right: 8px;
+        }
+
+        footer {
+            background: #101828;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                margin-top: 15px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-menu a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .about-hero {
+                padding-top: 140px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+            <span class="brand-logo">
+                <i class="bi bi-cpu-fill"></i>
+            </span>
+            Salary<span class="text-primary">AI</span>
+        </a>
+
+        <div class="nav-menu">
+            <a href="/"><i class="bi bi-house-door"></i> Home</a>
+            <a href="/predict"><i class="bi bi-graph-up-arrow"></i> Predict</a>
+            <a href="/about" class="active"><i class="bi bi-info-circle"></i> About</a>
+            
+        </div>
+    </div>
+</nav>
+
+<section class="about-hero">
+    <div class="container text-center">
+        <span class="hero-badge">
+            <i class="bi bi-info-circle-fill"></i> Project Overview
+        </span>
+
+        <h1 class="display-4 fw-bold">
+            About Employee Salary
+            <span class="gradient-text">Prediction System</span>
+        </h1>
+
+        <p class="lead mt-3 text-white-50">
+            AI-powered salary estimation system built with Flask, Python, and Machine Learning.
+        </p>
+    </div>
+</section>
+
+<div class="container py-5">
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="stats-box">
+                <h2 class="fw-bold text-primary">250K+</h2>
+                <p class="mb-0">Training Records</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stats-box">
+                <h2 class="fw-bold text-primary">91%</h2>
+                <p class="mb-0">Model Score</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stats-box">
+                <h2 class="fw-bold text-primary">6</h2>
+                <p class="mb-0">Input Features</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-card mb-5">
+        <h2 class="fw-bold mb-3">
+            <i class="bi bi-robot text-primary"></i>
+            Project Introduction
+        </h2>
+
+        <p class="fs-5 text-muted">
+            The Employee Salary Prediction System is an AI-powered web application designed to
+            predict employee salaries based on experience, education, skills, job role,
+            company size, and location.
+        </p>
+
+        <p class="text-muted">
+            The system uses Machine Learning to analyze historical salary data and generate
+            estimated salary results. It helps users understand expected salary ranges and
+            supports HR departments in data-driven decision making.
+        </p>
+    </div>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-6">
+            <div class="card feature-card p-4">
+                <div class="icon-box">
+                    <i class="bi bi-bullseye"></i>
+                </div>
+
+                <h4 class="fw-bold mb-3">Objectives</h4>
+
+                <ul class="list-unstyled list-check text-muted">
+                    <li><i class="bi bi-check-circle-fill"></i> Predict employee salaries using Machine Learning.</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Provide salary estimation through a web application.</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Allow users to enter employee profile details.</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Support data-driven hiring decisions.</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Build a user-friendly Flask-based system.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card feature-card p-4">
+                <div class="icon-box">
+                    <i class="bi bi-tools"></i>
+                </div>
+
+                <h4 class="fw-bold mb-3">Technologies Used</h4>
+
+                <ul class="list-unstyled list-check text-muted">
+                    <li><i class="bi bi-check-circle-fill"></i> Python Programming Language</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Flask Backend Framework</li>
+                    <li><i class="bi bi-check-circle-fill"></i> HTML, CSS, Bootstrap</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Pandas and NumPy</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Scikit-Learn Machine Learning Library</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Pickle for Model Saving</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-6">
+            <div class="card feature-card p-4">
+                <div class="icon-box">
+                    <i class="bi bi-cpu-fill"></i>
+                </div>
+
+                <h4 class="fw-bold mb-3">Machine Learning Model</h4>
+
+                <p class="text-muted">
+                    The system uses a Random Forest Regression model trained on approximately
+                    250,000 salary records.
+                </p>
+
+                <p class="text-muted">
+                    The model achieved an R2 score of 0.91, which shows strong prediction
+                    performance for this project.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card feature-card p-4">
+                <div class="icon-box">
+                    <i class="bi bi-database-fill-check"></i>
+                </div>
+
+                <h4 class="fw-bold mb-3">Dataset Features</h4>
+
+                <ul class="list-unstyled list-check text-muted">
+                    <li><i class="bi bi-check-circle-fill"></i> Job Title</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Experience Years</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Education Level</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Skills Count</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Company Size</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Location</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="main-card text-center">
+        <h3 class="fw-bold mb-3">How the System Works</h3>
+
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <i class="bi bi-ui-checks fs-1 text-primary"></i>
+                <h5 class="mt-3">User Input</h5>
+                <p class="text-muted">User enters employee details through the prediction form.</p>
+            </div>
+
+            <div class="col-md-4">
+                <i class="bi bi-cpu fs-1 text-primary"></i>
+                <h5 class="mt-3">Model Processing</h5>
+                <p class="text-muted">Flask sends the encoded data to the trained ML model.</p>
+            </div>
+
+            <div class="col-md-4">
+                <i class="bi bi-cash-stack fs-1 text-primary"></i>
+                <h5 class="mt-3">Salary Output</h5>
+                <p class="text-muted">The system displays the predicted annual salary.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="text-white text-center py-4">
+    <p class="mb-0">Employee Salary Prediction System using Flask and Machine Learning</p>
+</footer>
+
+</body>
+</html>

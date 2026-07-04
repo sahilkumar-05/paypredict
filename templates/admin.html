@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f3f6fb;
+            font-family: Arial, sans-serif;
+            color: #101828;
+        }
+
+        .admin-navbar {
+            background: #0b1020;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.22);
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            border-radius: 13px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+            box-shadow: 0 0 22px rgba(13,110,253,0.45);
+        }
+
+        .admin-pill {
+            background: rgba(255,255,255,0.08);
+            color: #d0d5dd;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            margin-left: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .admin-pill:hover,
+        .admin-pill.active {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
+        }
+
+        .logout-btn {
+            background: rgba(220, 53, 69, 0.15);
+            color: #ffb4bd;
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            margin-left: 8px;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .page-header {
+            padding: 120px 0 45px;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(13,110,253,0.28), transparent 30%),
+                radial-gradient(circle at 90% 20%, rgba(139,92,246,0.24), transparent 28%),
+                linear-gradient(135deg, #0b1020, #111827 60%, #1e1b4b);
+            color: white;
+        }
+
+        .breadcrumb-admin {
+            color: #98a2b3;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            background: rgba(16,185,129,0.16);
+            color: #6ee7b7;
+            border: 1px solid rgba(16,185,129,0.25);
+            padding: 8px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 14px;
+        }
+
+        .stat-card {
+            border: none;
+            border-radius: 22px;
+            padding: 22px;
+            background: white;
+            box-shadow: 0 12px 35px rgba(16,24,40,0.08);
+            height: 100%;
+        }
+
+        .stat-card small {
+            color: #667085;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: #eef4ff;
+            color: #0d6efd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .dashboard-card {
+            border: none;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(16,24,40,0.08);
+            background: white;
+            overflow: hidden;
+        }
+
+        .card-title-bar {
+            padding: 22px 24px;
+            border-bottom: 1px solid #eef2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table thead th {
+            background: #101828;
+            color: white;
+            font-weight: 500;
+            border: none;
+            padding: 14px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 14px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .salary-badge {
+            background: #ecfdf3;
+            color: #027a48;
+            padding: 7px 12px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .tag {
+            background: #eef4ff;
+            color: #0d6efd;
+            padding: 6px 10px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        footer {
+            background: #0b1020;
+        }
+
+        @media (max-width: 768px) {
+            .admin-actions {
+                margin-top: 15px;
+            }
+
+            .admin-pill,
+            .logout-btn {
+                display: inline-block;
+                margin-top: 8px;
+            }
+
+            .page-header {
+                padding-top: 145px;
+                text-align: center;
+            }
+
+            .card-title-bar {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top admin-navbar py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/admin">
+            <span class="brand-logo">
+                <i class="bi bi-shield-lock-fill"></i>
+            </span>
+            Admin<span class="text-primary">Panel</span>
+        </a>
+
+        <div class="admin-actions">
+            <a href="/admin" class="admin-pill active">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="/" class="admin-pill">
+                <i class="bi bi-globe2"></i> Website
+            </a>
+            <a href="/logout" class="logout-btn">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="page-header">
+    <div class="container">
+        <div class="row align-items-center g-3">
+            <div class="col-md-8">
+                <div class="breadcrumb-admin">
+                    Admin Panel / Dashboard Overview
+                </div>
+
+                <h1 class="display-6 fw-bold mb-2">
+                    Salary Prediction Dashboard
+                </h1>
+
+                <p class="lead text-white-50 mb-0">
+                    Monitor prediction records, model details, and salary insights.
+                </p>
+            </div>
+
+            <div class="col-md-4 text-md-end">
+                <span class="status-badge">
+                    <i class="bi bi-check-circle-fill"></i> Admin Session Active
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <small>Total Predictions</small>
+                        <h3 class="fw-bold mt-2 mb-0">{{ total_predictions }}</h3>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="bi bi-database-check"></i>
+                    </div>
+                </div>
+                <p class="text-muted mt-3 mb-0">Records saved in Neon database</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <small>Highest Salary</small>
+                        <h3 class="fw-bold mt-2 mb-0">{{ highest_salary }}</h3>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="bi bi-trophy-fill"></i>
+                    </div>
+                </div>
+                <p class="text-muted mt-3 mb-0">Highest predicted salary</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <small>Average Salary</small>
+                        <h3 class="fw-bold mt-2 mb-0">{{ average_salary }}</h3>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="bi bi-bar-chart-fill"></i>
+                    </div>
+                </div>
+                <p class="text-muted mt-3 mb-0">Average predicted salary</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <small>Latest Prediction</small>
+                        <h3 class="fw-bold mt-2 mb-0">{{ latest_prediction }}</h3>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+                </div>
+                <p class="text-muted mt-3 mb-0">Most recent salary result</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card dashboard-card mb-4">
+        <div class="card-title-bar">
+            <div>
+                <h4 class="fw-bold mb-1">
+                    <i class="bi bi-clock-history text-primary"></i>
+                    Prediction History
+                </h4>
+                <p class="text-muted mb-0">
+                    Latest salary prediction records from Neon database.
+                </p>
+            </div>
+
+            <span class="tag">Live Database</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Job Title</th>
+                        <th>Experience</th>
+                        <th>Education</th>
+                        <th>Skills</th>
+                        <th>Company Size</th>
+                        <th>Location</th>
+                        <th>Predicted Salary</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if predictions %}
+                        {% for row in predictions %}
+                        <tr>
+                            <td>{{ row[0] }}</td>
+                            <td><strong>{{ row[1] }}</strong></td>
+                            <td>{{ row[2] }} Years</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4] }}</td>
+                            <td>{{ row[5] }}</td>
+                            <td>{{ row[6] }}</td>
+                            <td>
+                                <span class="salary-badge">{{ row[7] }}</span>
+                            </td>
+                            <td>{{ row[8].strftime('%d %b %Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-5">
+                                No prediction records found.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<footer class="text-white text-center py-4">
+    <p class="mb-0">Admin Panel | Employee Salary Prediction System</p>
+</footer>
+
+</body>
+</html>
