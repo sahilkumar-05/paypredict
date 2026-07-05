@@ -1,36 +1,33 @@
+
+
+Admin · HTML
 <!DOCTYPE html>
 <html>
 <head>
     <title>Admin Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+ 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
+ 
     <style>
         * {
-            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
-
+ 
         body {
             background: #f3f6fb;
             font-family: Arial, sans-serif;
             color: #101828;
-            opacity: 0;
-            animation: pageFadeIn .7s ease forwards;
+            overflow-x: hidden;
         }
-
-        @keyframes pageFadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+ 
         .admin-navbar {
             background: #0b1020;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             box-shadow: 0 10px 35px rgba(0,0,0,0.22);
         }
-
+ 
         .brand-logo {
             width: 40px;
             height: 40px;
@@ -42,13 +39,13 @@
             color: white;
             margin-right: 10px;
             box-shadow: 0 0 22px rgba(13,110,253,0.45);
-            transition: transform .35s ease;
+            transition: transform 0.4s ease;
         }
-
+ 
         .navbar-brand:hover .brand-logo {
             transform: rotate(-8deg) scale(1.08);
         }
-
+ 
         .admin-pill {
             background: rgba(255,255,255,0.08);
             color: #d0d5dd;
@@ -57,16 +54,17 @@
             text-decoration: none;
             margin-left: 8px;
             font-size: 14px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             display: inline-block;
         }
-
+ 
         .admin-pill:hover,
         .admin-pill.active {
             background: linear-gradient(135deg, #0d6efd, #8b5cf6);
             color: white;
+            transform: translateY(-2px);
         }
-
+ 
         .logout-btn {
             background: rgba(220, 53, 69, 0.15);
             color: #ffb4bd;
@@ -75,73 +73,99 @@
             text-decoration: none;
             margin-left: 8px;
             font-size: 14px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             display: inline-block;
         }
-
+ 
         .logout-btn:hover {
             background: #dc3545;
             color: white;
+            transform: translateY(-2px);
         }
-
-        .navbar-toggler-custom {
+ 
+        /* Mobile hamburger */
+        .menu-toggle {
             display: none;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: white;
-            font-size: 1.35rem;
-            width: 46px;
-            height: 46px;
-            border-radius: 12px;
-            align-items: center;
-            justify-content: center;
-            transition: all .25s ease;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 0;
+            z-index: 1100;
         }
-
-        .navbar-toggler-custom:hover {
-            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+ 
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: #fff;
+            border-radius: 3px;
+            transition: all 0.35s ease;
         }
-
+ 
+        .menu-toggle.open span:nth-child(1) {
+            transform: translateY(9.5px) rotate(45deg);
+        }
+ 
+        .menu-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+ 
+        .menu-toggle.open span:nth-child(3) {
+            transform: translateY(-9.5px) rotate(-45deg);
+        }
+ 
         .page-header {
             padding: 120px 0 45px;
             background:
                 radial-gradient(circle at 15% 20%, rgba(13,110,253,0.28), transparent 30%),
                 radial-gradient(circle at 90% 20%, rgba(139,92,246,0.24), transparent 28%),
                 linear-gradient(135deg, #0b1020, #111827 60%, #1e1b4b);
-            background-size: 160% 160%;
-            animation: heroDrift 14s ease-in-out infinite;
             color: white;
+            position: relative;
+            overflow: hidden;
         }
-
-        @keyframes heroDrift {
-            0%   { background-position: 0% 0%; }
-            50%  { background-position: 60% 30%; }
-            100% { background-position: 0% 0%; }
+ 
+        .page-header::before {
+            content: "";
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(13,110,253,0.12);
+            bottom: -120px;
+            left: -80px;
+            filter: blur(20px);
+            animation: floatBlob 9s ease-in-out infinite;
         }
-
+ 
+        @keyframes floatBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -20px) scale(1.08); }
+        }
+ 
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+ 
+        .page-header .breadcrumb-admin,
+        .page-header h1,
+        .page-header p,
+        .page-header .status-badge {
+            position: relative;
+            animation: fadeInUp 0.8s ease both;
+        }
+ 
         .breadcrumb-admin {
             color: #98a2b3;
             font-size: 14px;
             margin-bottom: 10px;
-            opacity: 0;
-            animation: riseIn .6s ease .05s forwards;
         }
-
-        .page-header h1 {
-            opacity: 0;
-            animation: riseIn .65s ease .15s forwards;
-        }
-
-        .page-header .lead {
-            opacity: 0;
-            animation: riseIn .65s ease .25s forwards;
-        }
-
-        @keyframes riseIn {
-            from { opacity: 0; transform: translateY(14px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+ 
         .status-badge {
             background: rgba(16,185,129,0.16);
             color: #6ee7b7;
@@ -150,14 +174,8 @@
             border-radius: 30px;
             display: inline-block;
             font-size: 14px;
-            animation: pulseBadge 2.4s ease-in-out infinite;
         }
-
-        @keyframes pulseBadge {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.25); }
-            50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
-        }
-
+ 
         .stat-card {
             border: none;
             border-radius: 22px;
@@ -165,28 +183,25 @@
             background: white;
             box-shadow: 0 12px 35px rgba(16,24,40,0.08);
             height: 100%;
-            transition: transform .3s ease, box-shadow .3s ease;
+            transition: all 0.35s ease;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(25px);
         }
-
+ 
         .stat-card.in-view {
-            animation: revealUp .55s ease forwards;
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        @keyframes revealUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+ 
         .stat-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 40px rgba(16,24,40,0.14);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(16,24,40,0.14);
         }
-
+ 
         .stat-card small {
             color: #667085;
         }
-
+ 
         .stat-icon {
             width: 52px;
             height: 52px;
@@ -197,15 +212,15 @@
             align-items: center;
             justify-content: center;
             font-size: 26px;
-            transition: transform .3s ease, background .3s ease, color .3s ease;
+            transition: all 0.4s ease;
         }
-
+ 
         .stat-card:hover .stat-icon {
-            transform: rotate(-6deg) scale(1.08);
+            transform: rotate(-8deg) scale(1.1);
             background: linear-gradient(135deg, #0d6efd, #8b5cf6);
             color: white;
         }
-
+ 
         .dashboard-card {
             border: none;
             border-radius: 22px;
@@ -213,13 +228,15 @@
             background: white;
             overflow: hidden;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(25px);
+            transition: all 0.6s ease;
         }
-
+ 
         .dashboard-card.in-view {
-            animation: revealUp .6s ease forwards;
+            opacity: 1;
+            transform: translateY(0);
         }
-
+ 
         .card-title-bar {
             padding: 22px 24px;
             border-bottom: 1px solid #eef2f7;
@@ -227,7 +244,7 @@
             justify-content: space-between;
             align-items: center;
         }
-
+ 
         .table thead th {
             background: #101828;
             color: white;
@@ -236,30 +253,34 @@
             padding: 14px;
             white-space: nowrap;
         }
-
+ 
         .table tbody tr {
-            transition: background .2s ease, transform .2s ease;
+            transition: background 0.25s ease;
         }
-
+ 
+        .table tbody tr:hover {
+            background: #f5f8ff;
+        }
+ 
         .table tbody td {
             padding: 14px;
             vertical-align: middle;
             white-space: nowrap;
         }
-
+ 
         .salary-badge {
             background: #ecfdf3;
             color: #027a48;
             padding: 7px 12px;
             border-radius: 30px;
             font-weight: 600;
-            transition: transform .2s ease;
+            transition: transform 0.3s ease;
         }
-
+ 
         .table tbody tr:hover .salary-badge {
-            transform: scale(1.05);
+            transform: scale(1.06);
         }
-
+ 
         .tag {
             background: #eef4ff;
             color: #0d6efd;
@@ -268,84 +289,87 @@
             font-size: 13px;
             font-weight: 600;
         }
-
+ 
         footer {
             background: #0b1020;
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.001ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.001ms !important;
-            }
-        }
-
+ 
         @media (max-width: 991px) {
-            .navbar-toggler-custom {
-                display: flex;
-            }
-
             .admin-actions {
-                display: none;
-                position: absolute;
-                top: 68px;
-                left: 12px;
-                right: 12px;
-                width: auto;
-                flex-direction: column;
-                border-radius: 20px;
-                padding: 12px;
-                background: rgba(11,16,32,0.97);
-                z-index: 999;
-            }
-
-            .admin-actions.show {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 260px;
+                background: rgba(11, 16, 32, 0.98);
+                backdrop-filter: blur(18px);
                 display: flex;
-                animation: slideDownMenu .3s ease;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                gap: 12px;
+                padding: 30px;
+                transition: right 0.4s ease;
+                z-index: 1050;
+                margin-top: 0 !important;
             }
-
-            .admin-pill,
-            .logout-btn {
+ 
+            .admin-actions.show {
+                right: 0;
+            }
+ 
+            .admin-actions a {
+                width: 100%;
+                margin-left: 0 !important;
+            }
+ 
+            .menu-toggle {
+                display: flex;
+            }
+ 
+            .nav-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1040;
+            }
+ 
+            .nav-overlay.show {
                 display: block;
-                margin: 4px 0;
-                text-align: center;
             }
         }
-
-        @keyframes slideDownMenu {
-            from { opacity: 0; transform: translateY(-12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+ 
         @media (max-width: 768px) {
             .page-header {
                 padding-top: 145px;
                 text-align: center;
             }
-
+ 
             .card-title-bar {
                 display: block;
             }
         }
     </style>
 </head>
-
+ 
 <body>
-
+ 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top admin-navbar py-3">
-    <div class="container d-flex align-items-center justify-content-between">
+    <div class="container">
         <a class="navbar-brand fw-bold d-flex align-items-center" href="/admin">
             <span class="brand-logo">
                 <i class="bi bi-shield-lock-fill"></i>
             </span>
             Admin<span class="text-primary">Panel</span>
         </a>
-
-        <button class="navbar-toggler-custom" onclick="toggleMobileNav()" aria-label="Toggle navigation">
-            <i class="bi bi-list" id="navToggleIcon"></i>
+ 
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
         </button>
-
+ 
         <div class="admin-actions" id="navMenu">
             <a href="/admin" class="admin-pill active">
                 <i class="bi bi-speedometer2"></i> Dashboard
@@ -359,7 +383,9 @@
         </div>
     </div>
 </nav>
-
+ 
+<div class="nav-overlay" id="navOverlay"></div>
+ 
 <section class="page-header">
     <div class="container">
         <div class="row align-items-center g-3">
@@ -367,16 +393,16 @@
                 <div class="breadcrumb-admin">
                     Admin Panel / Dashboard Overview
                 </div>
-
+ 
                 <h1 class="display-6 fw-bold mb-2">
                     Salary Prediction Dashboard
                 </h1>
-
+ 
                 <p class="lead text-white-50 mb-0">
                     Monitor prediction records, model details, and salary insights.
                 </p>
             </div>
-
+ 
             <div class="col-md-4 text-md-end">
                 <span class="status-badge">
                     <i class="bi bi-check-circle-fill"></i> Admin Session Active
@@ -385,11 +411,11 @@
         </div>
     </div>
 </section>
-
+ 
 <div class="container py-5">
-
+ 
     <div class="row g-4 mb-4">
-
+ 
         <div class="col-md-3">
             <div class="stat-card">
                 <div class="d-flex justify-content-between align-items-start">
@@ -404,7 +430,7 @@
                 <p class="text-muted mt-3 mb-0">Records saved in Neon database</p>
             </div>
         </div>
-
+ 
         <div class="col-md-3">
             <div class="stat-card">
                 <div class="d-flex justify-content-between align-items-start">
@@ -419,7 +445,7 @@
                 <p class="text-muted mt-3 mb-0">Highest predicted salary</p>
             </div>
         </div>
-
+ 
         <div class="col-md-3">
             <div class="stat-card">
                 <div class="d-flex justify-content-between align-items-start">
@@ -434,7 +460,7 @@
                 <p class="text-muted mt-3 mb-0">Average predicted salary</p>
             </div>
         </div>
-
+ 
         <div class="col-md-3">
             <div class="stat-card">
                 <div class="d-flex justify-content-between align-items-start">
@@ -449,9 +475,9 @@
                 <p class="text-muted mt-3 mb-0">Most recent salary result</p>
             </div>
         </div>
-
+ 
     </div>
-
+ 
     <div class="card dashboard-card mb-4">
         <div class="card-title-bar">
             <div>
@@ -463,10 +489,10 @@
                     Latest salary prediction records from Neon database.
                 </p>
             </div>
-
+ 
             <span class="tag">Live Database</span>
         </div>
-
+ 
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead>
@@ -482,7 +508,7 @@
                         <th>Date</th>
                     </tr>
                 </thead>
-
+ 
                 <tbody>
                     {% if predictions %}
                         {% for row in predictions %}
@@ -511,53 +537,61 @@
             </table>
         </div>
     </div>
-
+ 
 </div>
-
+ 
 <footer class="text-white text-center py-4">
     <p class="mb-0">Admin Panel | Employee Salary Prediction System</p>
 </footer>
-
+ 
 <script>
-    function toggleMobileNav() {
-        var menu = document.getElementById('navMenu');
-        var icon = document.getElementById('navToggleIcon');
-        var isShown = menu.classList.toggle('show');
-        icon.classList.toggle('bi-list', !isShown);
-        icon.classList.toggle('bi-x-lg', isShown);
-    }
-
-    document.querySelectorAll('#navMenu a').forEach(function (link) {
-        link.addEventListener('click', function () {
-            document.getElementById('navMenu').classList.remove('show');
-            var icon = document.getElementById('navToggleIcon');
-            icon.classList.remove('bi-x-lg');
-            icon.classList.add('bi-list');
-        });
-    });
-
-    window.addEventListener('resize', function () {
-        if (window.innerWidth > 991) {
-            document.getElementById('navMenu').classList.remove('show');
-            var icon = document.getElementById('navToggleIcon');
-            icon.classList.remove('bi-x-lg');
-            icon.classList.add('bi-list');
+    (function () {
+        var menuToggle = document.getElementById('menuToggle');
+        var navMenu = document.getElementById('navMenu');
+        var navOverlay = document.getElementById('navOverlay');
+ 
+        function closeMenu() {
+            menuToggle.classList.remove('open');
+            navMenu.classList.remove('show');
+            navOverlay.classList.remove('show');
         }
-    });
-
-    var revealObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in-view');
-                revealObserver.unobserve(entry.target);
-            }
+ 
+        menuToggle.addEventListener('click', function () {
+            var isOpen = menuToggle.classList.toggle('open');
+            navMenu.classList.toggle('show', isOpen);
+            navOverlay.classList.toggle('show', isOpen);
         });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.stat-card, .dashboard-card').forEach(function (el) {
-        revealObserver.observe(el);
-    });
+ 
+        navOverlay.addEventListener('click', closeMenu);
+ 
+        var navLinks = navMenu.querySelectorAll('a');
+        for (var i = 0; i < navLinks.length; i++) {
+            navLinks[i].addEventListener('click', closeMenu);
+        }
+ 
+        // Scroll reveal animations
+        var revealEls = document.querySelectorAll('.stat-card, .dashboard-card');
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+ 
+            revealEls.forEach(function (el) {
+                observer.observe(el);
+            });
+        } else {
+            revealEls.forEach(function (el) {
+                el.classList.add('in-view');
+            });
+        }
+    })();
 </script>
-
+ 
 </body>
 </html>
+ 
