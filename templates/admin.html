@@ -1,500 +1,477 @@
-
-
-Admin · HTML
 <!DOCTYPE html>
 <html>
 <head>
     <title>Admin Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
- 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
- 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
     <style>
-        * {
-            scroll-behavior: smooth;
-        }
- 
+        * { box-sizing: border-box; }
+
         body {
             background: #f3f6fb;
             font-family: Arial, sans-serif;
             color: #101828;
-            overflow-x: hidden;
+            opacity: 0;
+            animation: pageFadeIn .7s ease forwards;
         }
- 
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .admin-navbar {
             background: #0b1020;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             box-shadow: 0 10px 35px rgba(0,0,0,0.22);
         }
- 
+
         .brand-logo {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             background: linear-gradient(135deg, #0d6efd, #8b5cf6);
             border-radius: 13px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            margin-right: 10px;
+            display: inline-flex; align-items: center; justify-content: center;
+            color: white; margin-right: 10px;
             box-shadow: 0 0 22px rgba(13,110,253,0.45);
-            transition: transform 0.4s ease;
+            transition: transform .35s ease;
         }
- 
-        .navbar-brand:hover .brand-logo {
-            transform: rotate(-8deg) scale(1.08);
-        }
- 
+
+        .navbar-brand:hover .brand-logo { transform: rotate(-8deg) scale(1.08); }
+
         .admin-pill {
-            background: rgba(255,255,255,0.08);
-            color: #d0d5dd;
-            padding: 8px 15px;
-            border-radius: 30px;
-            text-decoration: none;
-            margin-left: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: inline-block;
+            background: rgba(255,255,255,0.08); color: #d0d5dd;
+            padding: 8px 15px; border-radius: 30px; text-decoration: none;
+            margin-left: 8px; font-size: 14px; transition: 0.3s; display: inline-block;
         }
- 
-        .admin-pill:hover,
-        .admin-pill.active {
-            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
-            color: white;
-            transform: translateY(-2px);
+
+        .admin-pill:hover, .admin-pill.active {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6); color: white;
         }
- 
+
         .logout-btn {
-            background: rgba(220, 53, 69, 0.15);
-            color: #ffb4bd;
-            padding: 8px 15px;
-            border-radius: 30px;
-            text-decoration: none;
-            margin-left: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: inline-block;
+            background: rgba(220,53,69,0.15); color: #ffb4bd;
+            padding: 8px 15px; border-radius: 30px; text-decoration: none;
+            margin-left: 8px; font-size: 14px; transition: 0.3s; display: inline-block;
         }
- 
-        .logout-btn:hover {
-            background: #dc3545;
-            color: white;
-            transform: translateY(-2px);
-        }
- 
-        /* Mobile hamburger */
-        .menu-toggle {
+
+        .logout-btn:hover { background: #dc3545; color: white; }
+
+        .navbar-toggler-custom {
             display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 30px;
-            height: 22px;
-            cursor: pointer;
-            background: transparent;
-            border: none;
-            padding: 0;
-            z-index: 1100;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white; font-size: 1.35rem;
+            width: 46px; height: 46px; border-radius: 12px;
+            align-items: center; justify-content: center; transition: all .25s ease;
         }
- 
-        .menu-toggle span {
-            display: block;
-            height: 3px;
-            width: 100%;
-            background: #fff;
-            border-radius: 3px;
-            transition: all 0.35s ease;
-        }
- 
-        .menu-toggle.open span:nth-child(1) {
-            transform: translateY(9.5px) rotate(45deg);
-        }
- 
-        .menu-toggle.open span:nth-child(2) {
-            opacity: 0;
-        }
- 
-        .menu-toggle.open span:nth-child(3) {
-            transform: translateY(-9.5px) rotate(-45deg);
-        }
- 
+
+        .navbar-toggler-custom:hover { background: linear-gradient(135deg, #0d6efd, #8b5cf6); }
+
         .page-header {
             padding: 120px 0 45px;
             background:
                 radial-gradient(circle at 15% 20%, rgba(13,110,253,0.28), transparent 30%),
                 radial-gradient(circle at 90% 20%, rgba(139,92,246,0.24), transparent 28%),
                 linear-gradient(135deg, #0b1020, #111827 60%, #1e1b4b);
+            background-size: 160% 160%;
+            animation: heroDrift 14s ease-in-out infinite;
             color: white;
-            position: relative;
-            overflow: hidden;
         }
- 
-        .page-header::before {
-            content: "";
-            position: absolute;
-            width: 320px;
-            height: 320px;
-            border-radius: 50%;
-            background: rgba(13,110,253,0.12);
-            bottom: -120px;
-            left: -80px;
-            filter: blur(20px);
-            animation: floatBlob 9s ease-in-out infinite;
+
+        @keyframes heroDrift {
+            0%   { background-position: 0% 0%; }
+            50%  { background-position: 60% 30%; }
+            100% { background-position: 0% 0%; }
         }
- 
-        @keyframes floatBlob {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(20px, -20px) scale(1.08); }
-        }
- 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+
+        .breadcrumb-admin { color: #98a2b3; font-size: 14px; margin-bottom: 10px; opacity: 0; animation: riseIn .6s ease .05s forwards; }
+        .page-header h1 { opacity: 0; animation: riseIn .65s ease .15s forwards; }
+        .page-header .lead { opacity: 0; animation: riseIn .65s ease .25s forwards; }
+
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(14px); }
             to { opacity: 1; transform: translateY(0); }
         }
- 
-        .page-header .breadcrumb-admin,
-        .page-header h1,
-        .page-header p,
-        .page-header .status-badge {
-            position: relative;
-            animation: fadeInUp 0.8s ease both;
-        }
- 
-        .breadcrumb-admin {
-            color: #98a2b3;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
- 
+
         .status-badge {
-            background: rgba(16,185,129,0.16);
-            color: #6ee7b7;
+            background: rgba(16,185,129,0.16); color: #6ee7b7;
             border: 1px solid rgba(16,185,129,0.25);
-            padding: 8px 14px;
-            border-radius: 30px;
-            display: inline-block;
-            font-size: 14px;
+            padding: 8px 14px; border-radius: 30px;
+            display: inline-block; font-size: 14px;
+            animation: pulseBadge 2.4s ease-in-out infinite;
         }
- 
+
+        @keyframes pulseBadge {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.25); }
+            50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+        }
+
         .stat-card {
-            border: none;
-            border-radius: 22px;
-            padding: 22px;
-            background: white;
-            box-shadow: 0 12px 35px rgba(16,24,40,0.08);
-            height: 100%;
-            transition: all 0.35s ease;
-            opacity: 0;
-            transform: translateY(25px);
+            border: none; border-radius: 22px; padding: 22px;
+            background: white; box-shadow: 0 12px 35px rgba(16,24,40,0.08);
+            height: 100%; transition: transform .3s ease, box-shadow .3s ease;
+            opacity: 0; transform: translateY(20px);
         }
- 
-        .stat-card.in-view {
-            opacity: 1;
-            transform: translateY(0);
-        }
- 
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 45px rgba(16,24,40,0.14);
-        }
- 
-        .stat-card small {
-            color: #667085;
-        }
- 
+
+        .stat-card.in-view { animation: revealUp .55s ease forwards; }
+
+        @keyframes revealUp { to { opacity: 1; transform: translateY(0); } }
+
+        .stat-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(16,24,40,0.14); }
+        .stat-card small { color: #667085; }
+
         .stat-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
-            background: #eef4ff;
-            color: #0d6efd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            transition: all 0.4s ease;
+            width: 52px; height: 52px; border-radius: 16px;
+            background: #eef4ff; color: #0d6efd;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; transition: transform .3s ease, background .3s ease, color .3s ease;
         }
- 
+
         .stat-card:hover .stat-icon {
-            transform: rotate(-8deg) scale(1.1);
-            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
-            color: white;
+            transform: rotate(-6deg) scale(1.08);
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6); color: white;
         }
- 
+
         .dashboard-card {
-            border: none;
-            border-radius: 22px;
+            border: none; border-radius: 22px;
             box-shadow: 0 12px 35px rgba(16,24,40,0.08);
-            background: white;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(25px);
-            transition: all 0.6s ease;
+            background: white; overflow: hidden;
+            opacity: 0; transform: translateY(20px);
         }
- 
-        .dashboard-card.in-view {
-            opacity: 1;
-            transform: translateY(0);
-        }
- 
+
+        .dashboard-card.in-view { animation: revealUp .6s ease forwards; }
+
         .card-title-bar {
-            padding: 22px 24px;
-            border-bottom: 1px solid #eef2f7;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 22px 24px; border-bottom: 1px solid #eef2f7;
+            display: flex; justify-content: space-between; align-items: center;
         }
- 
+
         .table thead th {
-            background: #101828;
-            color: white;
-            font-weight: 500;
-            border: none;
-            padding: 14px;
-            white-space: nowrap;
+            background: #101828; color: white; font-weight: 500;
+            border: none; padding: 14px; white-space: nowrap;
         }
- 
-        .table tbody tr {
-            transition: background 0.25s ease;
-        }
- 
-        .table tbody tr:hover {
-            background: #f5f8ff;
-        }
- 
-        .table tbody td {
-            padding: 14px;
-            vertical-align: middle;
-            white-space: nowrap;
-        }
- 
+
+        .table tbody tr { transition: background .2s ease, transform .2s ease; }
+        .table tbody td { padding: 14px; vertical-align: middle; white-space: nowrap; }
+
         .salary-badge {
-            background: #ecfdf3;
-            color: #027a48;
-            padding: 7px 12px;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: transform 0.3s ease;
+            background: #ecfdf3; color: #027a48;
+            padding: 7px 12px; border-radius: 30px; font-weight: 600;
+            transition: transform .2s ease;
         }
- 
-        .table tbody tr:hover .salary-badge {
-            transform: scale(1.06);
-        }
- 
+
+        .table tbody tr:hover .salary-badge { transform: scale(1.05); }
+
         .tag {
-            background: #eef4ff;
-            color: #0d6efd;
-            padding: 6px 10px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
+            background: #eef4ff; color: #0d6efd;
+            padding: 6px 10px; border-radius: 30px; font-size: 13px; font-weight: 600;
         }
- 
-        footer {
-            background: #0b1020;
+
+        /* Filter buttons */
+        .filter-bar {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            padding: 16px 24px; border-bottom: 1px solid #eef2f7; background: #fafbff;
         }
- 
+
+        .filter-btn {
+            background: #f0f4ff; color: #0d6efd; border: 1.5px solid #c7d9ff;
+            padding: 6px 14px; border-radius: 30px; font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all .2s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white; border-color: transparent;
+            box-shadow: 0 4px 14px rgba(13,110,253,0.3);
+        }
+
+        /* Chart cards */
+        .chart-card {
+            background: white; border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(16,24,40,0.08);
+            padding: 24px; height: 100%;
+            opacity: 0; transform: translateY(20px);
+        }
+
+        .chart-card.in-view { animation: revealUp .6s ease forwards; }
+
+        .chart-card h6 {
+            font-weight: 700; color: #101828; margin-bottom: 4px;
+        }
+
+        .chart-card p { color: #667085; font-size: 13px; margin-bottom: 20px; }
+
+        /* Analytics insight cards */
+        .insight-card {
+            background: linear-gradient(135deg, #0b1020, #1a1f3c);
+            border-radius: 22px; padding: 22px; color: white;
+            height: 100%; opacity: 0; transform: translateY(20px);
+        }
+
+        .insight-card.in-view { animation: revealUp .6s ease forwards; }
+
+        .insight-card .insight-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-bottom: 12px;
+        }
+
+        .insight-card h5 { font-size: 28px; font-weight: 700; margin: 8px 0 4px; }
+        .insight-card small { color: rgba(255,255,255,0.5); font-size: 12px; }
+        .insight-card p { color: rgba(255,255,255,0.7); font-size: 13px; margin: 0; }
+
+        /* Section label */
+        .section-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: #98a2b3; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .section-label::after {
+            content: ''; flex: 1; height: 1px; background: #eef2f7;
+        }
+
+        footer { background: #0b1020; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+
         @media (max-width: 991px) {
+            .navbar-toggler-custom { display: flex; }
             .admin-actions {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                height: 100vh;
-                width: 260px;
-                background: rgba(11, 16, 32, 0.98);
-                backdrop-filter: blur(18px);
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: center;
-                gap: 12px;
-                padding: 30px;
-                transition: right 0.4s ease;
-                z-index: 1050;
-                margin-top: 0 !important;
+                display: none; position: absolute; top: 68px; left: 12px; right: 12px;
+                width: auto; flex-direction: column; border-radius: 20px; padding: 12px;
+                background: rgba(11,16,32,0.97); z-index: 999;
             }
- 
-            .admin-actions.show {
-                right: 0;
-            }
- 
-            .admin-actions a {
-                width: 100%;
-                margin-left: 0 !important;
-            }
- 
-            .menu-toggle {
-                display: flex;
-            }
- 
-            .nav-overlay {
-                display: none;
-                position: fixed;
-                inset: 0;
-                background: rgba(0,0,0,0.5);
-                z-index: 1040;
-            }
- 
-            .nav-overlay.show {
-                display: block;
-            }
+            .admin-actions.show { display: flex; animation: slideDownMenu .3s ease; }
+            .admin-pill, .logout-btn { display: block; margin: 4px 0; text-align: center; }
         }
- 
+
+        @keyframes slideDownMenu {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @media (max-width: 768px) {
-            .page-header {
-                padding-top: 145px;
-                text-align: center;
-            }
- 
-            .card-title-bar {
-                display: block;
-            }
+            .page-header { padding-top: 145px; text-align: center; }
+            .card-title-bar { display: block; }
+            .filter-bar { padding: 12px 16px; }
         }
     </style>
 </head>
- 
+
 <body>
- 
+
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top admin-navbar py-3">
-    <div class="container">
+    <div class="container d-flex align-items-center justify-content-between">
         <a class="navbar-brand fw-bold d-flex align-items-center" href="/admin">
-            <span class="brand-logo">
-                <i class="bi bi-shield-lock-fill"></i>
-            </span>
+            <span class="brand-logo"><i class="bi bi-shield-lock-fill"></i></span>
             Admin<span class="text-primary">Panel</span>
         </a>
- 
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-            <span></span>
-            <span></span>
-            <span></span>
+
+        <button class="navbar-toggler-custom" onclick="toggleMobileNav()" aria-label="Toggle navigation">
+            <i class="bi bi-list" id="navToggleIcon"></i>
         </button>
- 
+
         <div class="admin-actions" id="navMenu">
-            <a href="/admin" class="admin-pill active">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-            <a href="/" class="admin-pill">
-                <i class="bi bi-globe2"></i> Website
-            </a>
-            <a href="/logout" class="logout-btn">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </a>
+            <a href="/admin" class="admin-pill active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/" class="admin-pill"><i class="bi bi-globe2"></i> Website</a>
+            <a href="/logout" class="logout-btn"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
     </div>
 </nav>
- 
-<div class="nav-overlay" id="navOverlay"></div>
- 
+
 <section class="page-header">
     <div class="container">
         <div class="row align-items-center g-3">
             <div class="col-md-8">
-                <div class="breadcrumb-admin">
-                    Admin Panel / Dashboard Overview
-                </div>
- 
-                <h1 class="display-6 fw-bold mb-2">
-                    Salary Prediction Dashboard
-                </h1>
- 
-                <p class="lead text-white-50 mb-0">
-                    Monitor prediction records, model details, and salary insights.
-                </p>
+                <div class="breadcrumb-admin">Admin Panel / Dashboard Overview</div>
+                <h1 class="display-6 fw-bold mb-2">Salary Prediction Dashboard</h1>
+                <p class="lead text-white-50 mb-0">Monitor prediction records, model details, and salary insights.</p>
             </div>
- 
             <div class="col-md-4 text-md-end">
-                <span class="status-badge">
-                    <i class="bi bi-check-circle-fill"></i> Admin Session Active
-                </span>
+                <span class="status-badge"><i class="bi bi-check-circle-fill"></i> Admin Session Active</span>
             </div>
         </div>
     </div>
 </section>
- 
+
 <div class="container py-5">
- 
-    <div class="row g-4 mb-4">
- 
-        <div class="col-md-3">
+
+    <!-- Stats Row -->
+    <div class="section-label">Overview</div>
+    <div class="row g-4 mb-5">
+        <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <small>Total Predictions</small>
                         <h3 class="fw-bold mt-2 mb-0">{{ total_predictions }}</h3>
                     </div>
-                    <div class="stat-icon">
-                        <i class="bi bi-database-check"></i>
-                    </div>
+                    <div class="stat-icon"><i class="bi bi-database-check"></i></div>
                 </div>
-                <p class="text-muted mt-3 mb-0">Records saved in Neon database</p>
+                <p class="text-muted mt-3 mb-0">Records in database</p>
             </div>
         </div>
- 
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <small>Highest Salary</small>
                         <h3 class="fw-bold mt-2 mb-0">{{ highest_salary }}</h3>
                     </div>
-                    <div class="stat-icon">
-                        <i class="bi bi-trophy-fill"></i>
-                    </div>
+                    <div class="stat-icon"><i class="bi bi-trophy-fill"></i></div>
                 </div>
-                <p class="text-muted mt-3 mb-0">Highest predicted salary</p>
+                <p class="text-muted mt-3 mb-0">Highest predicted</p>
             </div>
         </div>
- 
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <small>Average Salary</small>
                         <h3 class="fw-bold mt-2 mb-0">{{ average_salary }}</h3>
                     </div>
-                    <div class="stat-icon">
-                        <i class="bi bi-bar-chart-fill"></i>
-                    </div>
+                    <div class="stat-icon"><i class="bi bi-bar-chart-fill"></i></div>
                 </div>
-                <p class="text-muted mt-3 mb-0">Average predicted salary</p>
+                <p class="text-muted mt-3 mb-0">Across all records</p>
             </div>
         </div>
- 
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <small>Latest Prediction</small>
                         <h3 class="fw-bold mt-2 mb-0">{{ latest_prediction }}</h3>
                     </div>
-                    <div class="stat-icon">
-                        <i class="bi bi-clock-history"></i>
-                    </div>
+                    <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
                 </div>
-                <p class="text-muted mt-3 mb-0">Most recent salary result</p>
+                <p class="text-muted mt-3 mb-0">Most recent result</p>
             </div>
         </div>
- 
     </div>
- 
+
+    <!-- Insight Cards -->
+    {% if predictions %}
+    <div class="section-label">Quick Insights</div>
+    <div class="row g-4 mb-5" id="insightRow">
+        <div class="col-6 col-md-3">
+            <div class="insight-card">
+                <div class="insight-icon"><i class="bi bi-briefcase-fill"></i></div>
+                <small>Top Job Title</small>
+                <h5 id="topJob">—</h5>
+                <p>Most predicted role</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="insight-card">
+                <div class="insight-icon"><i class="bi bi-geo-alt-fill"></i></div>
+                <small>Top Location</small>
+                <h5 id="topLocation">—</h5>
+                <p>Most queried city</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="insight-card">
+                <div class="insight-icon"><i class="bi bi-buildings-fill"></i></div>
+                <small>Top Company Size</small>
+                <h5 id="topCompany">—</h5>
+                <p>Most common size</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="insight-card">
+                <div class="insight-icon"><i class="bi bi-mortarboard-fill"></i></div>
+                <small>Top Education</small>
+                <h5 id="topEdu">—</h5>
+                <p>Most common level</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="section-label">Analytics</div>
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="chart-card">
+                <h6><i class="bi bi-bar-chart-line-fill text-primary me-2"></i>Salary by Job Title</h6>
+                <p>Average predicted salary per job role</p>
+                <canvas id="jobChart" height="220"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-card">
+                <h6><i class="bi bi-geo-alt-fill text-primary me-2"></i>Salary by Location</h6>
+                <p>Average predicted salary per city</p>
+                <canvas id="locationChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="chart-card">
+                <h6><i class="bi bi-pie-chart-fill text-primary me-2"></i>Company Size Distribution</h6>
+                <p>Predictions by company size</p>
+                <canvas id="companyChart" height="220"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="chart-card">
+                <h6><i class="bi bi-mortarboard-fill text-primary me-2"></i>Education Level Split</h6>
+                <p>Predictions by education</p>
+                <canvas id="eduChart" height="220"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="chart-card">
+                <h6><i class="bi bi-graph-up-arrow text-primary me-2"></i>Salary Range Distribution</h6>
+                <p>Predictions grouped by salary band</p>
+                <canvas id="rangeChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Prediction Table -->
+    <div class="section-label">Records</div>
     <div class="card dashboard-card mb-4">
         <div class="card-title-bar">
             <div>
                 <h4 class="fw-bold mb-1">
-                    <i class="bi bi-clock-history text-primary"></i>
-                    Prediction History
+                    <i class="bi bi-clock-history text-primary"></i> Prediction History
                 </h4>
-                <p class="text-muted mb-0">
-                    Latest salary prediction records from Neon database.
-                </p>
+                <p class="text-muted mb-0">Filter and browse salary prediction records.</p>
             </div>
- 
             <span class="tag">Live Database</span>
         </div>
- 
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <span style="font-size:13px;color:#667085;font-weight:500;align-self:center;">Filter by Salary:</span>
+            <button class="filter-btn active" onclick="filterTable('all', this)">All</button>
+            <button class="filter-btn" onclick="filterTable('low', this)">Under 50K</button>
+            <button class="filter-btn" onclick="filterTable('mid', this)">50K – 100K</button>
+            <button class="filter-btn" onclick="filterTable('high', this)">100K – 150K</button>
+            <button class="filter-btn" onclick="filterTable('top', this)">150K+</button>
+
+            <span style="font-size:13px;color:#667085;font-weight:500;align-self:center;margin-left:12px;">Search:</span>
+            <input type="text" id="searchInput" placeholder="Job title, location..." onkeyup="searchTable()"
+                style="border:1.5px solid #c7d9ff;border-radius:30px;padding:6px 14px;font-size:13px;outline:none;color:#101828;background:#f0f4ff;">
+        </div>
+
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover align-middle mb-0" id="predTable">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -508,11 +485,10 @@ Admin · HTML
                         <th>Date</th>
                     </tr>
                 </thead>
- 
-                <tbody>
+                <tbody id="tableBody">
                     {% if predictions %}
                         {% for row in predictions %}
-                        <tr>
+                        <tr data-salary="{{ row[7] }}">
                             <td>{{ row[0] }}</td>
                             <td><strong>{{ row[1] }}</strong></td>
                             <td>{{ row[2] }} Years</td>
@@ -520,15 +496,14 @@ Admin · HTML
                             <td>{{ row[4] }}</td>
                             <td>{{ row[5] }}</td>
                             <td>{{ row[6] }}</td>
-                            <td>
-                                <span class="salary-badge">{{ row[7] }}</span>
-                            </td>
+                            <td><span class="salary-badge">{{ row[7] }}</span></td>
                             <td>{{ row[8].strftime('%d %b %Y') }}</td>
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
                             <td colspan="9" class="text-center text-muted py-5">
+                                <i class="bi bi-inbox" style="font-size:2rem;display:block;margin-bottom:8px;"></i>
                                 No prediction records found.
                             </td>
                         </tr>
@@ -536,62 +511,218 @@ Admin · HTML
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination info -->
+        <div style="padding:14px 24px;border-top:1px solid #eef2f7;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#667085;">
+            <span id="rowCount">Showing all records</span>
+            <span>PayPredict Admin</span>
+        </div>
     </div>
- 
+
 </div>
- 
+
 <footer class="text-white text-center py-4">
     <p class="mb-0">Admin Panel | Employee Salary Prediction System</p>
 </footer>
- 
+
 <script>
-    (function () {
-        var menuToggle = document.getElementById('menuToggle');
-        var navMenu = document.getElementById('navMenu');
-        var navOverlay = document.getElementById('navOverlay');
- 
-        function closeMenu() {
-            menuToggle.classList.remove('open');
-            navMenu.classList.remove('show');
-            navOverlay.classList.remove('show');
-        }
- 
-        menuToggle.addEventListener('click', function () {
-            var isOpen = menuToggle.classList.toggle('open');
-            navMenu.classList.toggle('show', isOpen);
-            navOverlay.classList.toggle('show', isOpen);
+    // ─── Navbar ───────────────────────────────────────────
+    function toggleMobileNav() {
+        var menu = document.getElementById('navMenu');
+        var icon = document.getElementById('navToggleIcon');
+        var isShown = menu.classList.toggle('show');
+        icon.classList.toggle('bi-list', !isShown);
+        icon.classList.toggle('bi-x-lg', isShown);
+    }
+
+    document.querySelectorAll('#navMenu a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            document.getElementById('navMenu').classList.remove('show');
+            var icon = document.getElementById('navToggleIcon');
+            icon.classList.remove('bi-x-lg');
+            icon.classList.add('bi-list');
         });
- 
-        navOverlay.addEventListener('click', closeMenu);
- 
-        var navLinks = navMenu.querySelectorAll('a');
-        for (var i = 0; i < navLinks.length; i++) {
-            navLinks[i].addEventListener('click', closeMenu);
+    });
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 991) {
+            document.getElementById('navMenu').classList.remove('show');
+            var icon = document.getElementById('navToggleIcon');
+            icon.classList.remove('bi-x-lg');
+            icon.classList.add('bi-list');
         }
- 
-        // Scroll reveal animations
-        var revealEls = document.querySelectorAll('.stat-card, .dashboard-card');
-        if ('IntersectionObserver' in window) {
-            var observer = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
- 
-            revealEls.forEach(function (el) {
-                observer.observe(el);
-            });
-        } else {
-            revealEls.forEach(function (el) {
-                el.classList.add('in-view');
-            });
-        }
-    })();
+    });
+
+    // ─── Scroll reveal ────────────────────────────────────
+    var revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.stat-card, .dashboard-card, .chart-card, .insight-card').forEach(function(el) {
+        revealObserver.observe(el);
+    });
+
+    // ─── Extract table data for charts ───────────────────
+    var rows = document.querySelectorAll('#tableBody tr[data-salary]');
+    var jobMap = {}, locationMap = {}, companyMap = {}, eduMap = {}, salaries = [];
+
+    rows.forEach(function(row) {
+        var cells = row.querySelectorAll('td');
+        if (cells.length < 9) return;
+
+        var job      = cells[1].innerText.trim();
+        var edu      = cells[3].innerText.trim();
+        var company  = cells[5].innerText.trim();
+        var location = cells[6].innerText.trim();
+        var salStr   = cells[7].innerText.replace(/,/g, '').trim();
+        var sal      = parseFloat(salStr);
+
+        if (!isNaN(sal)) salaries.push(sal);
+
+        jobMap[job]           = jobMap[job]           || []; jobMap[job].push(sal);
+        locationMap[location] = locationMap[location] || []; locationMap[location].push(sal);
+        companyMap[company]   = (companyMap[company]  || 0) + 1;
+        eduMap[edu]           = (eduMap[edu]           || 0) + 1;
+    });
+
+    function avg(arr) { return arr.reduce(function(a,b){return a+b;},0)/arr.length; }
+    function topKey(obj) {
+        return Object.keys(obj).reduce(function(a,b){ return (Array.isArray(obj[a]) ? obj[a].length : obj[a]) >= (Array.isArray(obj[b]) ? obj[b].length : obj[b]) ? a : b; }, Object.keys(obj)[0]);
+    }
+
+    // ─── Insight cards ───────────────────────────────────
+    if (Object.keys(jobMap).length)      document.getElementById('topJob').innerText      = topKey(jobMap).split(' ').slice(0,2).join(' ');
+    if (Object.keys(locationMap).length) document.getElementById('topLocation').innerText = topKey(locationMap);
+    if (Object.keys(companyMap).length)  document.getElementById('topCompany').innerText  = topKey(companyMap);
+    if (Object.keys(eduMap).length)      document.getElementById('topEdu').innerText      = topKey(eduMap).split(' ').slice(0,2).join(' ');
+
+    // ─── Chart defaults ──────────────────────────────────
+    var BLUE = 'rgba(13,110,253,0.85)';
+    var PURPLE = 'rgba(139,92,246,0.85)';
+    var GRAD = ['#0d6efd','#8b5cf6','#06b6d4','#10b981','#f59e0b','#ef4444','#ec4899','#14b8a6'];
+
+    Chart.defaults.font.family = 'Arial, sans-serif';
+    Chart.defaults.color = '#667085';
+
+    function buildBarChart(id, labels, data, label) {
+        var ctx = document.getElementById(id);
+        if (!ctx) return;
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: data,
+                    backgroundColor: GRAD.slice(0, labels.length),
+                    borderRadius: 10,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { maxRotation: 30 } },
+                    y: { grid: { color: '#f0f4ff' }, ticks: { callback: function(v){ return '$'+Math.round(v/1000)+'K'; } } }
+                }
+            }
+        });
+    }
+
+    function buildDoughnut(id, labels, data) {
+        var ctx = document.getElementById(id);
+        if (!ctx) return;
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{ data: data, backgroundColor: GRAD.slice(0, labels.length), borderWidth: 2, borderColor: '#fff' }]
+            },
+            options: {
+                responsive: true,
+                cutout: '65%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 14, font: { size: 12 } } }
+                }
+            }
+        });
+    }
+
+    // Job title chart — top 7
+    var jobEntries = Object.entries(jobMap).map(function(e){ return { k: e[0], v: avg(e[1]) }; })
+        .sort(function(a,b){ return b.v - a.v; }).slice(0, 7);
+    buildBarChart('jobChart', jobEntries.map(function(e){ return e.k.split(' ').slice(0,2).join(' '); }), jobEntries.map(function(e){ return Math.round(e.v); }), 'Avg Salary');
+
+    // Location chart — top 7
+    var locEntries = Object.entries(locationMap).map(function(e){ return { k: e[0], v: avg(e[1]) }; })
+        .sort(function(a,b){ return b.v - a.v; }).slice(0, 7);
+    buildBarChart('locationChart', locEntries.map(function(e){ return e.k; }), locEntries.map(function(e){ return Math.round(e.v); }), 'Avg Salary');
+
+    // Company size doughnut
+    buildDoughnut('companyChart', Object.keys(companyMap), Object.values(companyMap));
+
+    // Education doughnut
+    buildDoughnut('eduChart', Object.keys(eduMap), Object.values(eduMap));
+
+    // Salary range bar
+    var bands = { 'Under 50K': 0, '50K–100K': 0, '100K–150K': 0, '150K+': 0 };
+    salaries.forEach(function(s) {
+        if (s < 50000) bands['Under 50K']++;
+        else if (s < 100000) bands['50K–100K']++;
+        else if (s < 150000) bands['100K–150K']++;
+        else bands['150K+']++;
+    });
+    buildBarChart('rangeChart', Object.keys(bands), Object.values(bands), 'Predictions');
+
+    // ─── Filter table ─────────────────────────────────────
+    function filterTable(range, btn) {
+        document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+
+        var allRows = document.querySelectorAll('#tableBody tr[data-salary]');
+        var visible = 0;
+
+        allRows.forEach(function(row) {
+            var sal = parseFloat(row.dataset.salary.replace(/,/g,''));
+            var show = false;
+            if (range === 'all')  show = true;
+            else if (range === 'low')  show = sal < 50000;
+            else if (range === 'mid')  show = sal >= 50000 && sal < 100000;
+            else if (range === 'high') show = sal >= 100000 && sal < 150000;
+            else if (range === 'top')  show = sal >= 150000;
+
+            row.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        document.getElementById('rowCount').innerText = 'Showing ' + visible + ' record' + (visible !== 1 ? 's' : '');
+    }
+
+    // ─── Search table ─────────────────────────────────────
+    function searchTable() {
+        var q = document.getElementById('searchInput').value.toLowerCase();
+        var allRows = document.querySelectorAll('#tableBody tr[data-salary]');
+        var visible = 0;
+
+        allRows.forEach(function(row) {
+            var text = row.innerText.toLowerCase();
+            var show = text.includes(q);
+            row.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        document.getElementById('rowCount').innerText = 'Showing ' + visible + ' record' + (visible !== 1 ? 's' : '');
+    }
+
+    // Initial row count
+    document.getElementById('rowCount').innerText = 'Showing ' + rows.length + ' record' + (rows.length !== 1 ? 's' : '');
 </script>
- 
+
 </body>
 </html>
- 
