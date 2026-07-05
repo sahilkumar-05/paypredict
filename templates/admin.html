@@ -8,10 +8,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             background: #f3f6fb;
             font-family: Arial, sans-serif;
             color: #101828;
+            opacity: 0;
+            animation: pageFadeIn .7s ease forwards;
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .admin-navbar {
@@ -31,6 +42,11 @@
             color: white;
             margin-right: 10px;
             box-shadow: 0 0 22px rgba(13,110,253,0.45);
+            transition: transform .35s ease;
+        }
+
+        .navbar-brand:hover .brand-logo {
+            transform: rotate(-8deg) scale(1.08);
         }
 
         .admin-pill {
@@ -42,6 +58,7 @@
             margin-left: 8px;
             font-size: 14px;
             transition: 0.3s;
+            display: inline-block;
         }
 
         .admin-pill:hover,
@@ -58,11 +75,31 @@
             text-decoration: none;
             margin-left: 8px;
             font-size: 14px;
+            transition: 0.3s;
+            display: inline-block;
         }
 
         .logout-btn:hover {
             background: #dc3545;
             color: white;
+        }
+
+        .navbar-toggler-custom {
+            display: none;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            font-size: 1.35rem;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            align-items: center;
+            justify-content: center;
+            transition: all .25s ease;
+        }
+
+        .navbar-toggler-custom:hover {
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
         }
 
         .page-header {
@@ -71,13 +108,38 @@
                 radial-gradient(circle at 15% 20%, rgba(13,110,253,0.28), transparent 30%),
                 radial-gradient(circle at 90% 20%, rgba(139,92,246,0.24), transparent 28%),
                 linear-gradient(135deg, #0b1020, #111827 60%, #1e1b4b);
+            background-size: 160% 160%;
+            animation: heroDrift 14s ease-in-out infinite;
             color: white;
+        }
+
+        @keyframes heroDrift {
+            0%   { background-position: 0% 0%; }
+            50%  { background-position: 60% 30%; }
+            100% { background-position: 0% 0%; }
         }
 
         .breadcrumb-admin {
             color: #98a2b3;
             font-size: 14px;
             margin-bottom: 10px;
+            opacity: 0;
+            animation: riseIn .6s ease .05s forwards;
+        }
+
+        .page-header h1 {
+            opacity: 0;
+            animation: riseIn .65s ease .15s forwards;
+        }
+
+        .page-header .lead {
+            opacity: 0;
+            animation: riseIn .65s ease .25s forwards;
+        }
+
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .status-badge {
@@ -88,6 +150,12 @@
             border-radius: 30px;
             display: inline-block;
             font-size: 14px;
+            animation: pulseBadge 2.4s ease-in-out infinite;
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.25); }
+            50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
         }
 
         .stat-card {
@@ -97,6 +165,22 @@
             background: white;
             box-shadow: 0 12px 35px rgba(16,24,40,0.08);
             height: 100%;
+            transition: transform .3s ease, box-shadow .3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .stat-card.in-view {
+            animation: revealUp .55s ease forwards;
+        }
+
+        @keyframes revealUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px rgba(16,24,40,0.14);
         }
 
         .stat-card small {
@@ -113,6 +197,13 @@
             align-items: center;
             justify-content: center;
             font-size: 26px;
+            transition: transform .3s ease, background .3s ease, color .3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: rotate(-6deg) scale(1.08);
+            background: linear-gradient(135deg, #0d6efd, #8b5cf6);
+            color: white;
         }
 
         .dashboard-card {
@@ -121,6 +212,12 @@
             box-shadow: 0 12px 35px rgba(16,24,40,0.08);
             background: white;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .dashboard-card.in-view {
+            animation: revealUp .6s ease forwards;
         }
 
         .card-title-bar {
@@ -140,6 +237,10 @@
             white-space: nowrap;
         }
 
+        .table tbody tr {
+            transition: background .2s ease, transform .2s ease;
+        }
+
         .table tbody td {
             padding: 14px;
             vertical-align: middle;
@@ -152,6 +253,11 @@
             padding: 7px 12px;
             border-radius: 30px;
             font-weight: 600;
+            transition: transform .2s ease;
+        }
+
+        .table tbody tr:hover .salary-badge {
+            transform: scale(1.05);
         }
 
         .tag {
@@ -167,17 +273,52 @@
             background: #0b1020;
         }
 
-        @media (max-width: 768px) {
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .navbar-toggler-custom {
+                display: flex;
+            }
+
             .admin-actions {
-                margin-top: 15px;
+                display: none;
+                position: absolute;
+                top: 68px;
+                left: 12px;
+                right: 12px;
+                width: auto;
+                flex-direction: column;
+                border-radius: 20px;
+                padding: 12px;
+                background: rgba(11,16,32,0.97);
+                z-index: 999;
+            }
+
+            .admin-actions.show {
+                display: flex;
+                animation: slideDownMenu .3s ease;
             }
 
             .admin-pill,
             .logout-btn {
-                display: inline-block;
-                margin-top: 8px;
+                display: block;
+                margin: 4px 0;
+                text-align: center;
             }
+        }
 
+        @keyframes slideDownMenu {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
             .page-header {
                 padding-top: 145px;
                 text-align: center;
@@ -193,7 +334,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top admin-navbar py-3">
-    <div class="container">
+    <div class="container d-flex align-items-center justify-content-between">
         <a class="navbar-brand fw-bold d-flex align-items-center" href="/admin">
             <span class="brand-logo">
                 <i class="bi bi-shield-lock-fill"></i>
@@ -201,7 +342,11 @@
             Admin<span class="text-primary">Panel</span>
         </a>
 
-        <div class="admin-actions">
+        <button class="navbar-toggler-custom" onclick="toggleMobileNav()" aria-label="Toggle navigation">
+            <i class="bi bi-list" id="navToggleIcon"></i>
+        </button>
+
+        <div class="admin-actions" id="navMenu">
             <a href="/admin" class="admin-pill active">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
@@ -372,6 +517,47 @@
 <footer class="text-white text-center py-4">
     <p class="mb-0">Admin Panel | Employee Salary Prediction System</p>
 </footer>
+
+<script>
+    function toggleMobileNav() {
+        var menu = document.getElementById('navMenu');
+        var icon = document.getElementById('navToggleIcon');
+        var isShown = menu.classList.toggle('show');
+        icon.classList.toggle('bi-list', !isShown);
+        icon.classList.toggle('bi-x-lg', isShown);
+    }
+
+    document.querySelectorAll('#navMenu a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            document.getElementById('navMenu').classList.remove('show');
+            var icon = document.getElementById('navToggleIcon');
+            icon.classList.remove('bi-x-lg');
+            icon.classList.add('bi-list');
+        });
+    });
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 991) {
+            document.getElementById('navMenu').classList.remove('show');
+            var icon = document.getElementById('navToggleIcon');
+            icon.classList.remove('bi-x-lg');
+            icon.classList.add('bi-list');
+        }
+    });
+
+    var revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.stat-card, .dashboard-card').forEach(function (el) {
+        revealObserver.observe(el);
+    });
+</script>
 
 </body>
 </html>
