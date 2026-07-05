@@ -1,0 +1,3 @@
+# HTML aur CSS ko language statistics se ignore karein
+*.html linguist-detectable=false
+*.css linguist-detectable=false
