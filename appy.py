@@ -12,7 +12,7 @@ DATABASE_URL = os.environ.get(
     "postgresql://neondb_owner:npg_CHPGtB7Io9bw@ep-hidden-river-atnmwecb-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 )
 
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "sahil05")
 
 
 def get_db():
